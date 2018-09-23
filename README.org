@@ -1,0 +1,105 @@
+* 2017 OWASP Top Ten: Injection
+** Learning Objectives
+1. Understand the #1 risk in the OWASP Top Ten, Injection, and how it can manifest
+   within Web Applications
+2. Be able to spot vulnerable code by viewing coding snippets that allow
+   sensitive data disclosure and server destruction
+3. Lab Exercise: Leverage Blind Injection to find vulnerable server-side logic
+
+** What is OWASP?
+- [[https://www.owasp.org/index.php/Top_10-2017_Top_10][OWASP]] is...
+  - a not-for-profit organization that focuses on application security
+  - Publishes the [[https://www.owasp.org/index.php/Top_10-2017_Top_10]["Top Ten"]] web application security risks
+
+** What is Injection?
+- Injection is risk #1 (most severe) within the 2017 OWASP Top Ten
+- Injection flaws occur when an attacker sends hostile data to an execution context
+  - Ex: Attacker supplies a command that the program unknowingly executes
+
+** Injection Motives
+[[file:notes.org_imgs/20180922_173005_uK4WjL.png]]
+- [[https://www.verizonenterprise.com/resources/reports/rp_DBIR_2018_Report_en_xg.pdf][Verizon's 2018 Data Breach Investigations Report]]
+
+** Injection Techniques
+- Vulnerable Node.js Webhook Code
+  #+BEGIN_SRC js
+    var curl = exec('curl ' + userSuppliedUrl);
+  #+END_SRC
+- Injection can be leveraged for:
+  - Destruction
+    - ~; rm -rf *~
+  - Sensitive Data Disclosure
+    - ~; printenv~
+
+** Injection Techniques (CONT.)
+- Reconnaissance (Probing)
+  - Injection to find more serious injection issues
+  - Often the beginning of a cyber attack
+    - [[https://en.wikipedia.org/wiki/Kill_chain][Cyber Kill Chain]]
+  - Focus of this tutorial
+    - NoSQL Injection example
+
+** What is NoSQL Injection (NoSQLi)?
+- Introduced when developers create database queries that include user supplied input
+  - Input isn't checked for unexpected commands, characters, etc.
+- Within MongoDb, NoSQLi can be found within query expressions that leverage the ~$where~
+  Query Operator
+
+** MongoDb $where Query Operator
+- Matches MongoDb documents that satisfy a JavaScript expression
+  #+BEGIN_SRC javascript
+    db.accounts.find({ '$where': 'this.password == ' + requestInput })
+  #+END_SRC
+- JavaScript expression is invoked for each document in the ~accounts~ collection
+  - Current document is referenced by ~this~
+- MongoDb whitelists certain Javascript functions that can be leveraged within
+  ~$where~ expressions
+
+** Quiz 1: $where Whitelisted Functions (Question)
+#+BEGIN_SRC text
+  // Available Functions
+  assert()     Map()         BinData()    MD5()
+  DBRef()      NumberLong()  emit()       print()
+  gc()         printjson()   HexData()    printjsononeline()
+  hex_md5()    sleep()       isNumber()   Timestamp()
+  isObject()   tojson()      ISODate()    tojsononeline()
+  isString()   tojsonObject() UUID()      version()
+  DBPointer()  NumberInt()
+#+END_SRC
+- An attacker is injecting ~requestInput~, and they have no way to view the
+  response. What function could aide in reconnaissance?
+  #+BEGIN_SRC javascript
+    db.accounts.find({ '$where': 'this.password == ' + requestInput })
+  #+END_SRC
+
+** Quiz 1: $Where Whitelisted Functions (Answer)
+- ~sleep(ms)~
+  #+BEGIN_SRC javascript
+    db.accounts.find({ '$where': 'this.password == ' + 'sleep(2000)' })
+  #+END_SRC
+  - Suspends execution for a specified number of ~ms~
+  - How could this help in reconnaissance?
+- Attacker can mass inject ~sleep()~ and observe response times
+  - Blind Injection: Don't need to observe the response body
+  - If route is vulnerable, dig deeper
+
+** Lab 1: Crafting The Payload (Question)
+- Exercise Setup
+  - Start the Juice Shop application
+    - Juice Shop is an intentionally vulnerable web application
+      - Isolated from your computer via a docker container
+    - ~docker run -p 3000:3000 bkimminich/juice-shop~
+- Find the part of the url that's vulnerable to injection attacks
+  - ~http://localhost:3000/rest/product/1/reviews~
+
+** Lab 1: Crafting The Payload (Answer)
+- ~http://localhost:3000/rest/product/sleep(2000)/reviews~
+  - Attacker would automate this
+
+** Summary
+- #1 risk in the OWASP Top Ten, Injection, and how it can manifest
+  within Web Applications
+- Spotted vulnerable code by viewing coding snippets that allow sensitive data disclosure and server destruction
+- Leveraged Blind Injection to find vulnerable server-side logic
+- https://quizlet.com/_59lisr
+- https://github.com/zachroof/OWASP-Top-Ten-2017/blob/master/README.org
