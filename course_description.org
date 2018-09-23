@@ -1,0 +1,36 @@
+* Course Description
+Insecure software is a serious threat; not only to businesses, but to our economy
+as a whole. As software becomes increasingly complex, and the pressure to innovate
+continues at a rapid pace, the difficulty of securing web applications increases exponentially.
+
+According to the 2017 Verizon Data Breach Investigations Report, 30 percent of
+data breaches target the Application Layer. Surely, individuals who understand
+Web Application Security (AppSec) will be in high demand into the future. But
+given the seemingly infinite amount of information regarding AppSec, where does
+one begin? How does one get a high-level overview of common Web Application
+vulnerabilities, before diving into the minutiae? Moreover, given the rapidly
+changing threat landscape, where can one find a course that examines common
+vulnerabilities in modern technology stacks (including cloud environments)?
+
+In this course, "2017 OWASP Top Ten", my goal is to give a solution
+to each of these questions/problems. If you have a very basic understanding of
+modern Web Application development and Javascript, this course is definitely for you! As a
+lifelong learner (and AppSec Enthusiast), I can't wait to embark on this learning
+journey with you!
+
+After completing this course, you will be able to:
+- Evaluate, exploit, and defend OWASP Top Ten risks within modern environments
+- Spot the Top Ten vulnerabilities within a frontend (Angular.js) and backend (Node.js) framework
+- Understand how the Top Ten vulnerabilities can be leveraged to exploit cloud
+  environments (ex: Amazon Web Services)
+- Use Burp Suite to exploit/evaluate the Top Ten vulnerabilities
+- Get "hands on" experience by exploiting Top Ten risks within a local environment
+- Spot faulty security assumptions that often result in vulnerabilities
+
+* Helpful Information
+- Prerequisites
+  1. [[https://store.docker.com/search?offering=community&type=edition][Install Docker]]
+     + Beta course tested on macOS High Sierra, but not on Windows
+  2. Basic Web Application development experience
+- Course Notes
+  + https://github.com/zachroof/OWASP-Top-Ten-2017/blob/master/README.org
