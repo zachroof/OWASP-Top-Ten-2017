@@ -16,10 +16,6 @@
 - Injection flaws occur when an attacker sends hostile data to an execution context
   - Ex: Attacker supplies a command that the program unknowingly executes
 
-** Injection Motives
-[[file:notes.org_imgs/20180922_173005_uK4WjL.png]]
-- [[https://www.verizonenterprise.com/resources/reports/rp_DBIR_2018_Report_en_xg.pdf][Verizon's 2018 Data Breach Investigations Report]]
-
 ** Injection Techniques
 - Vulnerable Node.js Webhook Code
   #+BEGIN_SRC js
